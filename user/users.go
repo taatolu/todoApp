@@ -1,14 +1,21 @@
 package user
 
+import (
+    "main/autNum"
+    )
+
 type User struct {
     Id  string
-    Name    string
+    FirstName    string
+    LastName    string
 }
 
 
-func NewUser(id string,name string) *User{
+func NewUser(fname string, lname string) *User{
     user := new(User)
-    user.Id = id
-    user.Name = name
+    user.FirstName = fname
+    user.LastName = lname
+    user.Id = autNum(fname)
+    
     return user
 }
