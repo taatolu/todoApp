@@ -20,6 +20,9 @@ func LoadConfig(){
         log.Fatalln(err)
     }
     
-    Config.Logfile = cfg.Section("web").Key("logfile").String()
+    Config = ConfigList{
+        Logfile:  cfg.Section("web").Key("logfile").String(),
+    }
+    
     fmt.Println(Config.Logfile)
 }
