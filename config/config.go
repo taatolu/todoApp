@@ -4,6 +4,7 @@ import(
     "log"
     "github.com/go-ini/ini"
     "fmt"
+
     )
     
 
@@ -12,6 +13,8 @@ type ConfigList struct{
 }
 
 var Config ConfigList
+
+
 
 func LoadConfig(){
     cfg, err := ini.Load("config.ini")

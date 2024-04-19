@@ -1,7 +1,7 @@
 package user
 
 import (
-    "main/autNum"
+    //"main/autNum"
     )
 
 type User struct {
@@ -15,7 +15,7 @@ func NewUser(fname string, lname string) *User{
     user := new(User)
     user.FirstName = fname
     user.LastName = lname
-    user.Id = autNum(fname)
+    //user.Id = autNum(fname)
     
     return user
 }
