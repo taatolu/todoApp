@@ -14,7 +14,6 @@ func LoggingSettings(iniLog string){
         log.Fatalln(err)
     }
     
-    fmt.Printf("ログファイルは%vやでー",iniLog)
     
     mltiLogfile := io.MultiWriter(logfile,os.Stdout)
     log.SetFlags(log.Ldate | log.Ltime | log.Lshortfile)
