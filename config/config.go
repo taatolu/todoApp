@@ -2,8 +2,8 @@ package config
 
 import(
     "log"
+    "main/utils"
     "github.com/go-ini/ini"
-    "fmt"
 
     )
     
@@ -14,6 +14,11 @@ type ConfigList struct{
 
 var Config ConfigList
 
+
+func init () {
+    LoadConfig()
+    utils.LoggingSettings(Config.Logfile)
+}
 
 
 func LoadConfig(){
@@ -27,5 +32,4 @@ func LoadConfig(){
         Logfile:  cfg.Section("web").Key("logfile").String(),
     }
     
-    fmt.Println(Config.Logfile)
 }
