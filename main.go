@@ -2,6 +2,7 @@ package main
 
 import (
     "main/user"
+    _ "main/app"
     
     "fmt"
     "log"
