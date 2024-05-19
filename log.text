@@ -1,3 +1,11 @@
 2024/04/19 04:39:14 main.go:22: this is a TEST
 2024/05/19 09:51:28 base.go:39: pq: password authentication failed for user "ubuntu"
 2024/05/19 09:59:50 main.go:18: this is a TEST
+2024/05/19 13:30:12 base.go:45: pq: type "string" does not exist
+2024/05/19 13:31:12 base.go:45: pq: type "datetime" does not exist
+2024/05/19 13:34:49 main.go:18: this is a TEST
+2024/05/19 13:36:32 main.go:19: this is a TEST
+2024/05/19 13:36:32 user.go:34: pq: column "created_at" of relation "users" does not exist
+2024/05/19 13:39:57 main.go:19: this is a TEST
+2024/05/19 13:39:57 user.go:34: pq: column "created_at" of relation "users" does not exist
+2024/05/19 13:40:50 main.go:19: this is a TEST
