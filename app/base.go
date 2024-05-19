@@ -6,6 +6,7 @@ import(
     
     "fmt"
     "log"
+    "main/config"
     )
 
 
@@ -19,7 +20,11 @@ const(
 
 
 func init () {
-    Db , err = sql.Open("postgres", "user=ubuntu password=ubuntu dbname=ubuntu sslmode=disable")
+    user := config.DbConfig.User
+    password := config.DbConfig.Password
+    dbname := config.DbConfig.Dbname
+    connStr :=fmt.Sprintf("user=%s password=%s dbname=%s sslmode=disable", user, password, dbname)
+    Db , err = sql.Open("postgres", connStr)
     
     if err != nil{
         log.Fatalln(err)

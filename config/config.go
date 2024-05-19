@@ -8,16 +8,23 @@ import(
     )
     
 
-type ConfigList struct{
+type WebConfigList struct{
     Logfile string
 }
 
-var Config ConfigList
+type DbConfigList struct{
+    User string
+    Password string
+    Dbname string
+}
+
+var WebConfig WebConfigList
+var DbConfig DbConfigList
 
 
 func init () {
     LoadConfig()
-    utils.LoggingSettings(Config.Logfile)
+    utils.LoggingSettings(WebConfig.Logfile)
 }
 
 
@@ -28,8 +35,13 @@ func LoadConfig(){
         log.Fatalln(err)
     }
     
-    Config = ConfigList{
+    WebConfig = WebConfigList{
         Logfile:  cfg.Section("web").Key("logfile").String(),
     }
     
+    DbConfig = DbConfigList{
+        User:  cfg.Section("db").Key("user").String(),
+        Password: cfg.Section("db").Key("password").String(),
+        Dbname: cfg.Section("db").Key("dbname").String(),
+    }
 }
