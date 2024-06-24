@@ -23,7 +23,7 @@ func (u *User) CreateUser()(err error){
     password,
     create_at) values ($1,$2,$3,$4,$5)`
     
-    _,err = Db.Exec(cmd,
+    _, err = Db.Exec(cmd,
         createUUID(),
         u.Name,
         u.Email,
@@ -34,4 +34,17 @@ func (u *User) CreateUser()(err error){
         log.Fatalln(err)
     }
     return err
+}
+
+func GetUser (userID int)(user User, err error){
+    cmd := "select * from users where id = $1"
+    err = Db.QueryRow(cmd,userID).Scan(
+        &user.ID,
+        &user.UUID,
+        &user.Name,
+        &user.Email,
+        &user.Password,
+        &user.CreateAt)
+
+    return user, err
 }

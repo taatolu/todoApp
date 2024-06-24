@@ -9,3 +9,5 @@
 2024/05/19 13:39:57 main.go:19: this is a TEST
 2024/05/19 13:39:57 user.go:34: pq: column "created_at" of relation "users" does not exist
 2024/05/19 13:40:50 main.go:19: this is a TEST
+2024/06/24 09:14:18 base.go:45: pq: password authentication failed for user "ubuntu"
+2024/06/24 09:15:49 main.go:30: sql: no rows in result set
