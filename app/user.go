@@ -15,6 +15,7 @@ type User struct {
     CreateAt   time.Time
 }
 
+//create user
 func (u *User) CreateUser()(err error){
     cmd := `insert into users (
     uuid,
@@ -47,4 +48,23 @@ func GetUser (userID int)(user User, err error){
         &user.CreateAt)
 
     return user, err
+}
+
+func (u *User) UpdateUser()(err error){
+    cmd := "UPDATE users SET name=$2,email=$3 WHERE id=$1"
+    
+    _, err = Db.Exec(cmd, u.ID, u.Name, u.Email)
+    if err != nil {
+        log.Fatalln(err)
+    }
+    return err
+}
+
+func DeleteUser(id int)(err error){
+    cmd := "DELETE FROM users WHERE id = $1"
+    _, err = Db.Exec(cmd,id)
+    if err != nil{
+        log.Fatalln(err)
+    }
+    return err
 }

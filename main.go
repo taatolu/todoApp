@@ -6,7 +6,7 @@ import (
     "main/app"
     
     "fmt"
-    "log"
+    _"log"
 
     )
 
@@ -17,7 +17,7 @@ func main(){
     fmt.Println(user1)
     
     //log.Println("this is a TEST")
-    
+
     u := &app.User{}
     u.Name = "test2"
     u.Email = "test2@exsample.com"
@@ -25,9 +25,23 @@ func main(){
     
     u.CreateUser()
     
+    
     addUser, err := app.GetUser(2)
     if err !=nil{
         log.Fatalln(err)
     }
     fmt.Println(addUser)
+    
+    addUser.Name = "yuza"
+    addUser.Email = "yuza@example.com"
+    addUser.UpdateUser()
+    
+    updatedUser, err := app.GetUser(2)
+    if err !=nil{
+        log.Fatalln(err)
+    }
+    fmt.Println(updatedUser)
+    
+    _ = app.DeleteUser(2)
+    
 }
