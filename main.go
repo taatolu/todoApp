@@ -36,8 +36,12 @@ func main(){
     if err !=nil{
         log.Fatalln(err)
     }
+    
+    updatedUser.CreateTodo("テストTODO")
+    
+    /*
     fmt.Println(updatedUser)
     
     _ = models.DeleteUser(2)
-    
+    */
 }
