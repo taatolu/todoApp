@@ -1,9 +1,7 @@
 package main
 
 import (
-    "main/user"
-    _ "main/app"
-    "main/app"
+    "main/models"
     
     "fmt"
     _"log"
@@ -18,7 +16,7 @@ func main(){
     
     //log.Println("this is a TEST")
 
-    u := &app.User{}
+    u := &models.User{}
     u.Name = "test2"
     u.Email = "test2@exsample.com"
     u.Password = "testtest"
@@ -26,7 +24,7 @@ func main(){
     u.CreateUser()
     
     
-    addUser, err := app.GetUser(2)
+    addUser, err := models.GetUser(2)
     if err !=nil{
         log.Fatalln(err)
     }
@@ -36,12 +34,12 @@ func main(){
     addUser.Email = "yuza@example.com"
     addUser.UpdateUser()
     
-    updatedUser, err := app.GetUser(2)
+    updatedUser, err := models.GetUser(2)
     if err !=nil{
         log.Fatalln(err)
     }
     fmt.Println(updatedUser)
     
-    _ = app.DeleteUser(2)
+    _ = models.DeleteUser(2)
     
 }
