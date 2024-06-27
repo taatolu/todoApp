@@ -1,4 +1,4 @@
-package app
+package models
 
 import(
     "crypto/sha1"
@@ -18,6 +18,7 @@ var err error
 
 const(
     tableNameUser = "users"
+    tableNameTodo = "todos"
     )
 
 
@@ -42,6 +43,16 @@ func init () {
     
     _ , err := Db.Exec(cmdU)
     if err != nil{
+        log.Fatalln(err)
+    }
+    
+    cmdT:= fmt.Sprintf(`CREATE TABLE IF NOT EXISTS %s(
+        id  SERIAL,
+        content VARCHAR,
+        userID  INTEGER)`,tableNameTodo)
+        
+    _, err = Db.Exec(cmdT)
+    if err != nil {
         log.Fatalln(err)
     }
 }
