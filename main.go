@@ -4,7 +4,7 @@ import (
     "main/models"
     
     "fmt"
-    _"log"
+    "log"
 
     )
 
@@ -12,8 +12,18 @@ import (
 
 func main(){
     
-    todo, _ := models.GetTodo(1)
-    fmt.Println(todo)
+    u, err:= models.GetUser(2)
+    if err != nil{
+        log.Fatalln(err)
+    }
+    
+    todos, err := u.GetTodos()
+    if err != nil {
+        log.Fatalln(err)
+    }
+    for _, v := range todos{
+        fmt.Println(v)
+    }
     
     //log.Println("this is a TEST")
     /*
