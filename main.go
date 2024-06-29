@@ -4,7 +4,7 @@ import (
     "main/models"
     
     "fmt"
-    "log"
+    _"log"
 
     )
 
@@ -12,8 +12,11 @@ import (
 
 func main(){
     
+    todo, _ := models.GetTodo(1)
+    fmt.Println(todo)
+    
     //log.Println("this is a TEST")
-
+    /*
     u := &models.User{}
     u.Name = "test2"
     u.Email = "test2@exsample.com"
@@ -38,8 +41,6 @@ func main(){
     }
     
     updatedUser.CreateTodo("テストTODO")
-    
-    /*
     fmt.Println(updatedUser)
     
     _ = models.DeleteUser(2)
