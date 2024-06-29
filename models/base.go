@@ -49,7 +49,9 @@ func init () {
     cmdT:= fmt.Sprintf(`CREATE TABLE IF NOT EXISTS %s(
         id  SERIAL,
         content VARCHAR,
-        userid  INTEGER)`,tableNameTodo)
+        userid  INTEGER,
+        create_at   TIMESTAMP,
+        update_at   TIMESTAMP)`,tableNameTodo)
         
     _, err = Db.Exec(cmdT)
     if err != nil {

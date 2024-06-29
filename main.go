@@ -11,48 +11,30 @@ import (
 
 
 func main(){
+
     
-    u, err:= models.GetUser(2)
+    //log.Println("this is a TEST")
+    /*
+    u := &models.User{}
+    u.Name = "testman"
+    u.Email = "testman@exsample.com"
+    u.Password = "testtest"
+    
+    u.CreateUser()
+    */
+    user1, err := models.GetUser(1)
     if err != nil{
         log.Fatalln(err)
     }
     
-    todos, err := u.GetTodos()
+    user1.CreateTodo("User1のテストTODO2")
+
+        
+    todos, err := user1.GetTodos()
     if err != nil {
         log.Fatalln(err)
     }
     for _, v := range todos{
         fmt.Println(v)
     }
-    
-    //log.Println("this is a TEST")
-    /*
-    u := &models.User{}
-    u.Name = "test2"
-    u.Email = "test2@exsample.com"
-    u.Password = "testtest"
-    
-    u.CreateUser()
-    
-    
-    addUser, err := models.GetUser(2)
-    if err !=nil{
-        log.Fatalln(err)
-    }
-    fmt.Println(addUser)
-    
-    addUser.Name = "yuza"
-    addUser.Email = "yuza@example.com"
-    addUser.UpdateUser()
-    
-    updatedUser, err := models.GetUser(2)
-    if err !=nil{
-        log.Fatalln(err)
-    }
-    
-    updatedUser.CreateTodo("テストTODO")
-    fmt.Println(updatedUser)
-    
-    _ = models.DeleteUser(2)
-    */
 }

@@ -2,6 +2,7 @@ package models
 
 import(
     "log"
+    "time"
     )
     
 
@@ -9,15 +10,23 @@ type Todo struct{
     ID  int
     Content string
     UserID  int
+    CreateAt    time.Time
+    UpdateAt    time.Time
 }
 
 
 func (u *User) CreateTodo(content string)(err error){
     cmd := `insert into todos(
         content,
-        userid) values($1,$2)`
+        userid,
+        create_at,
+        update_at) values($1,$2,$3,$4)`
     
-    _, err = Db.Exec(cmd,content,u.ID)
+    _, err = Db.Exec(cmd,
+        content,
+        u.ID,
+        time.Now(),
+        time.Now())
     if err != nil{
         log.Fatalln(err)
     }
@@ -32,7 +41,9 @@ func GetTodo(todoid int)(todo Todo, err error){
     err = Db.QueryRow(cmd,todoid).Scan(
         &todo.ID,
         &todo.Content,
-        &todo.UserID)
+        &todo.UserID,
+        &todo.CreateAt,
+        &todo.UpdateAt)
         
     if err != nil{
         log.Fatalln(err)
@@ -55,7 +66,9 @@ func (u *User)GetTodos()(todos []Todo, err error){
         err = rows.Scan(
             &todo.ID,
             &todo.Content,
-            &todo.UserID)
+            &todo.UserID,
+            &todo.CreateAt,
+            &todo.UpdateAt)
         if err != nil{
             log.Fatalln(err)
         }
