@@ -10,8 +10,8 @@ type Todo struct{
     ID  int
     Content string
     UserID  int
-    CreateAt    time.Time
-    UpdateAt    time.Time
+    Create_At    time.Time
+    Update_At    time.Time
 }
 
 
@@ -42,8 +42,8 @@ func GetTodo(todoid int)(todo Todo, err error){
         &todo.ID,
         &todo.Content,
         &todo.UserID,
-        &todo.CreateAt,
-        &todo.UpdateAt)
+        &todo.Create_At,
+        &todo.Update_At)
         
     if err != nil{
         log.Fatalln(err)
@@ -54,7 +54,7 @@ func GetTodo(todoid int)(todo Todo, err error){
 
 
 func (u *User)GetTodos()(todos []Todo, err error){
-    cmd := `select * from todos where userid = $1`
+    cmd := `select * from todos where userid = $1 ORDER BY id asc`
     
     rows, err := Db.Query(cmd,u.ID)
     if err != nil {
@@ -67,8 +67,8 @@ func (u *User)GetTodos()(todos []Todo, err error){
             &todo.ID,
             &todo.Content,
             &todo.UserID,
-            &todo.CreateAt,
-            &todo.UpdateAt)
+            &todo.Create_At,
+            &todo.Update_At)
         if err != nil{
             log.Fatalln(err)
         }
@@ -78,6 +78,17 @@ func (u *User)GetTodos()(todos []Todo, err error){
     rows.Close()
     
     return todos, err
+}
+
+func (t *Todo) UpdateTodo(newContent string)(err error){
+    cmd:= `UPDATE todos SET Content = $2, Update_At = $3 WHERE id = $1`
+    _, err = Db.Exec(cmd, t.ID, newContent, time.Now())
+    
+    if err != nil {
+        log.Fatalln(err)
+    }
+    
+    return err
 }
 
 func DeleteTodos(todoid int)(err error){
