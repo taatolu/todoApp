@@ -1,19 +1,29 @@
 package main
 
 import (
-    _"main/config"
     "main/models"
-    
+    "main/utils"
+    "main/config"
     "fmt"
-
+    "log"
     )
 
 
 
 func main(){
+    //設定ファイルの読み込み
+    conf, err := config.LoadConfig("product")
+    if err != nil{
+        log.Fatalln(err)
+    }
     
-    models.InitDB("product")
+    //LOｇの設定
+    utils.LoggingSettings(conf.Logfile)
+    
+    //ＤＢイニシャライズ
+    models.InitDB(conf)
     fmt.Println(models.DB)
+
     
     /*
     u := &models.User{}
