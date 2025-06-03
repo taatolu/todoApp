@@ -22,11 +22,10 @@ const(
     )
 
 
-func InitDB (section string) {
-    cfg, err := config.LoadConfig(section)
-    user := cfg.User
-    password :=cfg.Password
-    dbname := cfg.DBname
+func InitDB (conf *config.Config) {
+    user := conf.User
+    password :=conf.Password
+    dbname := conf.DBname
     connStr :=fmt.Sprintf("user=%s password=%s dbname=%s sslmode=disable", user, password, dbname)
     DB , err = sql.Open("postgres", connStr)
     

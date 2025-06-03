@@ -2,7 +2,6 @@ package config
 
 import(
     "fmt"
-    _ "main/utils"
     "github.com/go-ini/ini"
 
     )
@@ -13,11 +12,6 @@ type Config struct{
     User string
     Password string
     DBname string
-}
-
-
-func init () {
-    //utils.LoggingSettings(WebConfig.Logfile)
 }
 
 
