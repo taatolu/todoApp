@@ -1,18 +1,21 @@
 package main
 
 import (
+    _"main/config"
     "main/models"
     
     "fmt"
-    "log"
 
     )
 
 
 
 func main(){
-
-
+    
+    models.InitDB("product")
+    fmt.Println(models.DB)
+    
+    /*
     u := &models.User{}
     u.Name = "testman"
     u.Email = "testman@exsample.com"
@@ -38,12 +41,12 @@ func main(){
     
     //user1.CreateTodo("テストTODO1")
     
-    /*
+    
     err = models.DeleteTodos(3)
     if err != nil{
         log.Fatalln(err)
     }
-    */
+    
         
     todos, err := user1.GetTodos()
     if err != nil {
@@ -52,4 +55,5 @@ func main(){
     for _, v := range todos{
         fmt.Println(v)
     }
+    */
 }

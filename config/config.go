@@ -1,47 +1,37 @@
 package config
 
 import(
-    "log"
-    "main/utils"
+    "fmt"
+    _ "main/utils"
     "github.com/go-ini/ini"
 
     )
-    
 
-type WebConfigList struct{
+
+type Config struct{
     Logfile string
-}
-
-type DbConfigList struct{
     User string
     Password string
-    Dbname string
+    DBname string
 }
-
-var WebConfig WebConfigList
-var DbConfig DbConfigList
 
 
 func init () {
-    LoadConfig()
-    utils.LoggingSettings(WebConfig.Logfile)
+    //utils.LoggingSettings(WebConfig.Logfile)
 }
 
 
-func LoadConfig(){
+func LoadConfig(section string)(*Config, error){
     cfg, err := ini.Load("config.ini")
     
     if err != nil{
-        log.Fatalln(err)
+        return nil, fmt.Errorf("iniファイル読込エラー：%w", err)
     }
     
-    WebConfig = WebConfigList{
-        Logfile:  cfg.Section("web").Key("logfile").String(),
-    }
-    
-    DbConfig = DbConfigList{
-        User:  cfg.Section("db").Key("user").String(),
-        Password: cfg.Section("db").Key("password").String(),
-        Dbname: cfg.Section("db").Key("dbname").String(),
-    }
+    return &Config {
+        Logfile:    cfg.Section(section).Key("logfile").String(),
+        User:  cfg.Section(section).Key("user").String(),
+        Password: cfg.Section(section).Key("password").String(),
+        DBname: cfg.Section(section).Key("dbname").String(),
+    }, nil
 }

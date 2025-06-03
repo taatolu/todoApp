@@ -12,7 +12,7 @@ import(
     )
 
 
-var Db *sql.DB
+var DB *sql.DB
 
 var err error
 
@@ -22,12 +22,13 @@ const(
     )
 
 
-func init () {
-    user := config.DbConfig.User
-    password := config.DbConfig.Password
-    dbname := config.DbConfig.Dbname
+func InitDB (section string) {
+    cfg, err := config.LoadConfig(section)
+    user := cfg.User
+    password :=cfg.Password
+    dbname := cfg.DBname
     connStr :=fmt.Sprintf("user=%s password=%s dbname=%s sslmode=disable", user, password, dbname)
-    Db , err = sql.Open("postgres", connStr)
+    DB , err = sql.Open("postgres", connStr)
     
     if err != nil{
         log.Fatalln(err)
@@ -41,7 +42,7 @@ func init () {
         password VARCHAR,
         create_at TIMESTAMP)`,tableNameUser)
     
-    _ , err := Db.Exec(cmdU)
+    _ , err = DB.Exec(cmdU)
     if err != nil{
         log.Fatalln(err)
     }
@@ -53,7 +54,7 @@ func init () {
         create_at   TIMESTAMP,
         update_at   TIMESTAMP)`,tableNameTodo)
         
-    _, err = Db.Exec(cmdT)
+    _, err = DB.Exec(cmdT)
     if err != nil {
         log.Fatalln(err)
     }

@@ -24,7 +24,7 @@ func (u *User) CreateUser()(err error){
     password,
     create_at) values ($1,$2,$3,$4,$5)`
     
-    _, err = Db.Exec(cmd,
+    _, err = DB.Exec(cmd,
         createUUID(),
         u.Name,
         u.Email,
@@ -39,7 +39,7 @@ func (u *User) CreateUser()(err error){
 
 func GetUser (userID int)(user User, err error){
     cmd := "select * from users where id = $1"
-    err = Db.QueryRow(cmd,userID).Scan(
+    err = DB.QueryRow(cmd,userID).Scan(
         &user.ID,
         &user.UUID,
         &user.Name,
@@ -53,7 +53,7 @@ func GetUser (userID int)(user User, err error){
 func (u *User) UpdateUser()(err error){
     cmd := "UPDATE users SET name=$2,email=$3 WHERE id=$1"
     
-    _, err = Db.Exec(cmd, u.ID, u.Name, u.Email)
+    _, err = DB.Exec(cmd, u.ID, u.Name, u.Email)
     if err != nil {
         log.Fatalln(err)
     }
@@ -62,7 +62,7 @@ func (u *User) UpdateUser()(err error){
 
 func DeleteUser(id int)(err error){
     cmd := "DELETE FROM users WHERE id = $1"
-    _, err = Db.Exec(cmd,id)
+    _, err = DB.Exec(cmd,id)
     if err != nil{
         log.Fatalln(err)
     }
