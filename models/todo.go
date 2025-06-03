@@ -22,7 +22,7 @@ func (u *User) CreateTodo(content string)(err error){
         create_at,
         update_at) values($1,$2,$3,$4)`
     
-    _, err = Db.Exec(cmd,
+    _, err = DB.Exec(cmd,
         content,
         u.ID,
         time.Now(),
@@ -38,7 +38,7 @@ func (u *User) CreateTodo(content string)(err error){
 func GetTodo(todoid int)(todo Todo, err error){
     todo = Todo{}
     cmd := `select * from todos where id = $1`
-    err = Db.QueryRow(cmd,todoid).Scan(
+    err = DB.QueryRow(cmd,todoid).Scan(
         &todo.ID,
         &todo.Content,
         &todo.UserID,
@@ -56,7 +56,7 @@ func GetTodo(todoid int)(todo Todo, err error){
 func (u *User)GetTodos()(todos []Todo, err error){
     cmd := `select * from todos where userid = $1 ORDER BY id asc`
     
-    rows, err := Db.Query(cmd,u.ID)
+    rows, err := DB.Query(cmd,u.ID)
     if err != nil {
         log.Fatalln(err)
     }
@@ -82,7 +82,7 @@ func (u *User)GetTodos()(todos []Todo, err error){
 
 func (t *Todo) UpdateTodo(newContent string)(err error){
     cmd:= `UPDATE todos SET Content = $2, Update_At = $3 WHERE id = $1`
-    _, err = Db.Exec(cmd, t.ID, newContent, time.Now())
+    _, err = DB.Exec(cmd, t.ID, newContent, time.Now())
     
     if err != nil {
         log.Fatalln(err)
@@ -94,7 +94,7 @@ func (t *Todo) UpdateTodo(newContent string)(err error){
 func DeleteTodos(todoid int)(err error){
     cmd := `DELETE FROM todos WHERE id = $1`
     
-    _, err = Db.Exec(cmd,todoid)
+    _, err = DB.Exec(cmd,todoid)
     if err != nil{
         log.Fatalln(err)
     }
