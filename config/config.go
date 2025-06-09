@@ -3,7 +3,8 @@ package config
 import(
     "fmt"
     "github.com/go-ini/ini"
-
+    "runtime"
+    "path/filepath"
     )
 
 
@@ -14,9 +15,16 @@ type Config struct{
     DBname string
 }
 
+func getProjectRoot()string{
+    _, filename, _, _ := runtime.Caller(0)
+    return filepath.Dir(filepath.Dir(filename))
+}
+
 
 func LoadConfig(section string)(*Config, error){
-    cfg, err := ini.Load("config.ini")
+    root:= getProjectRoot()
+    cfgpath:= filepath.Join(root,"config.ini")
+    cfg, err := ini.Load(cfgpath)
     
     if err != nil{
         return nil, fmt.Errorf("iniファイル読込エラー：%w", err)
