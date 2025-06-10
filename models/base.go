@@ -5,9 +5,7 @@ import(
     "database/sql"
     _ "github.com/lib/pq"
     "github.com/google/uuid"
-    
     "fmt"
-    "log"
     "main/config"
     )
 
@@ -22,7 +20,7 @@ const(
     )
 
 
-func InitDB (conf *config.Config) {
+func InitDB (conf *config.Config) error {
     user := conf.User
     password :=conf.Password
     dbname := conf.DBname
@@ -30,7 +28,7 @@ func InitDB (conf *config.Config) {
     DB , err = sql.Open("postgres", connStr)
     
     if err != nil{
-        log.Fatalln(err)
+        return fmt.Errorf("DB接続エラー %w", err)
     }
     
     cmdU := fmt.Sprintf(`CREATE TABLE IF NOT EXISTS %s(
@@ -43,7 +41,7 @@ func InitDB (conf *config.Config) {
     
     _ , err = DB.Exec(cmdU)
     if err != nil{
-        log.Fatalln(err)
+        return fmt.Errorf("createUserTableエラー %w", err)
     }
     
     cmdT:= fmt.Sprintf(`CREATE TABLE IF NOT EXISTS %s(
@@ -55,8 +53,9 @@ func InitDB (conf *config.Config) {
         
     _, err = DB.Exec(cmdT)
     if err != nil {
-        log.Fatalln(err)
+        return fmt.Errorf("createTodoTableエラー %w", err)
     }
+    return nil
 }
 
 func createUUID()(uuidobj uuid.UUID) {
