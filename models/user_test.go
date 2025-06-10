@@ -1,22 +1,19 @@
-package test
+package models
 
 import(
     "testing"
-    _ "github.com/stretchr/testify/assert"
-    "main/models"
-    _ "main/config"
     )
 
 func TestCreateUser(t *testing.T){
     tests := []struct {
         testname    string
-        user        *models.User
+        user        *User
         wantErr     bool
     }{
         //テストケースの作成
         {
             testname:       "正常系",
-            user:           &models.User{
+            user:           &User{
                 Name:       "yusaku",
                 Email:      "test@example.com",
                 Password:   "test123",
@@ -25,7 +22,7 @@ func TestCreateUser(t *testing.T){
         },
         {
             testname:       "異常系（Nameなし）",
-            user:           &models.User{
+            user:           &User{
                 Name:       "",
                 Email:      "test@example.com",
                 Password:   "test123",
@@ -34,7 +31,7 @@ func TestCreateUser(t *testing.T){
         },
         {
             testname:       "異常系（メアドなし）",
-            user:           &models.User{
+            user:           &User{
                 Name:       "yusaku",
                 Email:      "",
                 Password:   "test123",
@@ -43,7 +40,7 @@ func TestCreateUser(t *testing.T){
         },
         {
             testname:       "異常系（Passなし）",
-            user:           &models.User{
+            user:           &User{
                 Name:       "yusaku",
                 Email:      "test@example.com",
                 Password:   "",
