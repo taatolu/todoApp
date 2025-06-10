@@ -3,6 +3,7 @@ package models
 import(
     "time"
     "log"
+    "errors"
     )
     
 
@@ -17,6 +18,15 @@ type User struct {
 
 //create user
 func (u *User) CreateUser()(err error){
+    if u.Name ==""{
+        return errors.New("name is required")
+    }
+    if u.Email ==""{
+        return errors.New("email is required")
+    }
+    if u.Password ==""{
+        return errors.New("password is required")
+    }
     cmd := `insert into users (
     uuid,
     name,
