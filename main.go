@@ -23,9 +23,18 @@ func main(){
     //ＤＢイニシャライズ
     models.InitDB(conf)
     fmt.Println(models.DB)
-
     
-    /*
+    
+    user1, err := models.GetUser(1)
+    todos, err := user1.GetTodos()
+    if err != nil{
+        log.Fatalln(err)
+    }
+    
+    for _, v :=range todos{
+        fmt.Println(v)
+    }
+    /*   
     u := &models.User{}
     u.Name = "testman"
     u.Email = "testman@exsample.com"
@@ -33,10 +42,13 @@ func main(){
     
     //u.CreateUser()
     
-    user1, err := models.GetUser(1)
+    
+    //user1.CreateTodo("にこめのさんぷるだよー")
+    todo, err := models.GetTodo(2)
     if err != nil{
         log.Fatalln(err)
     }
+    fmt.Println(todo)
     
     
     todo1, err := models.GetTodo(1)

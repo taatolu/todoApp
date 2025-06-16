@@ -1,103 +1,79 @@
 package models
 
 import(
-    "log"
+    "fmt"
     "time"
     )
-    
 
 type Todo struct{
     ID  int
-    Content string
-    UserID  int
-    Create_At    time.Time
-    Update_At    time.Time
+    Content     string
+    UserID      int
+    Create_at   time.Time
+    Update_at   time.Time
 }
 
-
-func (u *User) CreateTodo(content string)(err error){
-    cmd := `insert into todos(
+func (u *User)CreateTodo(content string)error{
+    cmd:= `insert into todos (
         content,
         userid,
         create_at,
-        update_at) values($1,$2,$3,$4)`
-    
-    _, err = DB.Exec(cmd,
-        content,
-        u.ID,
-        time.Now(),
-        time.Now())
-    if err != nil{
-        log.Fatalln(err)
+        update_at) values ($1,$2,$3,$4)`
+    if _, err := DB.Exec(cmd, content, u.ID, time.Now(), time.Now()); err!= nil{
+        return fmt.Errorf("CreteTodoError %w", err)
     }
     
-    return err
+    return nil
 }
 
-
-func GetTodo(todoid int)(todo Todo, err error){
-    todo = Todo{}
+func GetTodo(todoNum int)(todo *Todo, err error){
+    todo = &Todo{}
     cmd := `select * from todos where id = $1`
-    err = DB.QueryRow(cmd,todoid).Scan(
+    err = DB.QueryRow(cmd,todoNum).Scan(
         &todo.ID,
         &todo.Content,
         &todo.UserID,
-        &todo.Create_At,
-        &todo.Update_At)
-        
+        &todo.Create_at,
+        &todo.Update_at)
     if err != nil{
-        log.Fatalln(err)
+        return nil, fmt.Errorf("GetTodoError %w", err)
     }
     
-    return todo, err
+    return todo, nil
 }
 
 
-func (u *User)GetTodos()(todos []Todo, err error){
-    cmd := `select * from todos where userid = $1 ORDER BY id asc`
+func (u *User)GetTodos()(todos []*Todo, err error){
+    
+    cmd := `select * from todos where userid = $1`
     
     rows, err := DB.Query(cmd,u.ID)
-    if err != nil {
-        log.Fatalln(err)
+    if err != nil{
+        return nil, fmt.Errorf("GetTodosError %w", err)
     }
+    defer rows.Close()
     
-    for rows.Next() {
-        var todo Todo
+    for rows.Next(){
+        todo := &Todo{}
         err = rows.Scan(
             &todo.ID,
             &todo.Content,
             &todo.UserID,
-            &todo.Create_At,
-            &todo.Update_At)
+            &todo.Create_at,
+            &todo.Update_at)
         if err != nil{
-            log.Fatalln(err)
+            return nil, fmt.Errorf("GetTodosError %w", err)
         }
-        
-        todos = append(todos, todo)
+        todos = append(todos,todo)
     }
-    rows.Close()
-    
-    return todos, err
+    return todos, nil
 }
 
-func (t *Todo) UpdateTodo(newContent string)(err error){
-    cmd:= `UPDATE todos SET Content = $2, Update_At = $3 WHERE id = $1`
-    _, err = DB.Exec(cmd, t.ID, newContent, time.Now())
-    
-    if err != nil {
-        log.Fatalln(err)
+func DeleteTodo(todoid int)error{
+    cmd:=`delete from todos where id=$1`
+    if _, err = DB.Exec(cmd, todoid); err != nil{
+        return fmt.Errorf("DeleteTodosError %w", err)
     }
-    
-    return err
+    return nil
 }
 
-func DeleteTodos(todoid int)(err error){
-    cmd := `DELETE FROM todos WHERE id = $1`
-    
-    _, err = DB.Exec(cmd,todoid)
-    if err != nil{
-        log.Fatalln(err)
-    }
-    
-    return err
-}
