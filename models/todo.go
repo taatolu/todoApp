@@ -8,7 +8,7 @@ import(
 type Todo struct{
     ID  int
     Content     string
-    UserID      string
+    UserID      int
     Create_at   time.Time
     Update_at   time.Time
 }
