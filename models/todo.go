@@ -8,6 +8,7 @@ import(
 type Todo struct{
     ID  int
     Content     string
+    State       string
     UserID      int
     Create_at   time.Time
     Update_at   time.Time
@@ -16,10 +17,11 @@ type Todo struct{
 func (u *User)CreateTodo(content string)error{
     cmd:= `insert into todos (
         content,
+        state,
         userid,
         create_at,
-        update_at) values ($1,$2,$3,$4)`
-    if _, err := DB.Exec(cmd, content, u.ID, time.Now(), time.Now()); err!= nil{
+        update_at) values ($1,$2,$3,$4,$5)`
+    if _, err := DB.Exec(cmd, content, "未着手", u.ID, time.Now(), time.Now()); err!= nil{
         return fmt.Errorf("CreteTodoError %w", err)
     }
     
@@ -32,6 +34,7 @@ func GetTodo(todoNum int)(todo *Todo, err error){
     err = DB.QueryRow(cmd,todoNum).Scan(
         &todo.ID,
         &todo.Content,
+        &todo.State,
         &todo.UserID,
         &todo.Create_at,
         &todo.Update_at)
@@ -58,6 +61,7 @@ func (u *User)GetTodos()(todos []*Todo, err error){
         err = rows.Scan(
             &todo.ID,
             &todo.Content,
+            &todo.State,
             &todo.UserID,
             &todo.Create_at,
             &todo.Update_at)
@@ -67,6 +71,15 @@ func (u *User)GetTodos()(todos []*Todo, err error){
         todos = append(todos,todo)
     }
     return todos, nil
+}
+
+func (t *Todo)UpdateTodo(todoState string)(err error){
+    cmd := `update todos set state = $2, update_at=$3 where id = $1`
+    _, err = DB.Exec(cmd, t.ID, todoState, time.Now())
+    if err != nil{
+        return fmt.Errorf("UpdateTodoError %w", err)
+    }
+    return nil
 }
 
 func DeleteTodo(todoid int)error{
