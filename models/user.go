@@ -55,7 +55,6 @@ func GetUser (userID int)(user *User, err error){
         &user.UUID,
         &user.Name,
         &user.Email,
-        &user.Password,
         &user.CreateAt)
 
     return user, err
