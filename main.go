@@ -26,6 +26,15 @@ func main(){
     
     
     user1, err := models.GetUser(1)
+    if err != nil{
+        log.Fatalln(err)
+    }
+    
+    if err = user1.CreateTodo("サンプルだよー"); err!= nil{
+        log.Fatalln(err)
+    }
+    
+    /*
     todos, err := user1.GetTodos()
     if err != nil{
         log.Fatalln(err)
@@ -33,6 +42,18 @@ func main(){
     
     for _, v :=range todos{
         fmt.Println(v)
+    }
+    */
+    
+    todo1, err := models.GetTodo(1)
+    if err != nil{
+        log.Fatalln(err)
+    }
+    fmt.Println(todo1)
+    
+    err = todo1.UpdateTodo("着手")
+    if err != nil{
+        log.Fatalln(err)
     }
     /*   
     u := &models.User{}

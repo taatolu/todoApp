@@ -47,6 +47,7 @@ func InitDB (conf *config.Config) error {
     cmdT:= fmt.Sprintf(`CREATE TABLE IF NOT EXISTS %s(
         id  SERIAL,
         content VARCHAR,
+        state   VARCHAR,
         userid  INTEGER,
         create_at   TIMESTAMP,
         update_at   TIMESTAMP)`,tableNameTodo)
