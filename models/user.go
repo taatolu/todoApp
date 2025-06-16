@@ -47,7 +47,8 @@ func (u *User) CreateUser()(err error){
     return err
 }
 
-func GetUser (userID int)(user User, err error){
+func GetUser (userID int)(user *User, err error){
+    user = &User{}
     cmd := "select * from users where id = $1"
     err = DB.QueryRow(cmd,userID).Scan(
         &user.ID,
