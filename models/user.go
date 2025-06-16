@@ -13,7 +13,7 @@ type User struct {
     Name        string
     Email       string
     Password    string
-    CreateAt   time.Time
+    CreatedAt   time.Time
 }
 
 //create user
@@ -32,7 +32,7 @@ func (u *User) CreateUser()(err error){
     name,
     email,
     password,
-    create_at) values ($1,$2,$3,$4,$5)`
+    createdat) values ($1,$2,$3,$4,$5)`
     
     _, err = DB.Exec(cmd,
         createUUID(),
@@ -49,13 +49,13 @@ func (u *User) CreateUser()(err error){
 
 func GetUser (userID int)(user *User, err error){
     user = &User{}
-    cmd := "select * from users where id = $1"
+    cmd := "select id, uuid, name, email, createdat from users where id = $1"
     err = DB.QueryRow(cmd,userID).Scan(
         &user.ID,
         &user.UUID,
         &user.Name,
         &user.Email,
-        &user.CreateAt)
+        &user.CreatedAt)
 
     return user, err
 }

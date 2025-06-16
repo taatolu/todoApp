@@ -10,8 +10,8 @@ type Todo struct{
     Content     string
     State       string
     UserID      int
-    Create_at   time.Time
-    Update_at   time.Time
+    CreatedAt   time.Time
+    UpdatedAt   time.Time
 }
 
 func (u *User)CreateTodo(content string)error{
@@ -19,8 +19,8 @@ func (u *User)CreateTodo(content string)error{
         content,
         state,
         userid,
-        create_at,
-        update_at) values ($1,$2,$3,$4,$5)`
+        createdat,
+        updatedat) values ($1,$2,$3,$4,$5)`
     if _, err := DB.Exec(cmd, content, "未着手", u.ID, time.Now(), time.Now()); err!= nil{
         return fmt.Errorf("CreteTodoError %w", err)
     }
@@ -36,8 +36,8 @@ func GetTodo(todoNum int)(todo *Todo, err error){
         &todo.Content,
         &todo.State,
         &todo.UserID,
-        &todo.Create_at,
-        &todo.Update_at)
+        &todo.CreatedAt,
+        &todo.UpdatedAt)
     if err != nil{
         return nil, fmt.Errorf("GetTodoError %w", err)
     }
@@ -63,8 +63,8 @@ func (u *User)GetTodos()(todos []*Todo, err error){
             &todo.Content,
             &todo.State,
             &todo.UserID,
-            &todo.Create_at,
-            &todo.Update_at)
+            &todo.CreatedAt,
+            &todo.UpdatedAt)
         if err != nil{
             return nil, fmt.Errorf("GetTodosError %w", err)
         }
@@ -74,7 +74,7 @@ func (u *User)GetTodos()(todos []*Todo, err error){
 }
 
 func (t *Todo)UpdateTodo(todoState string)(err error){
-    cmd := `update todos set state = $2, update_at=$3 where id = $1`
+    cmd := `update todos set state = $2, updatedat=$3 where id = $1`
     _, err = DB.Exec(cmd, t.ID, todoState, time.Now())
     if err != nil{
         return fmt.Errorf("UpdateTodoError %w", err)

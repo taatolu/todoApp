@@ -37,7 +37,7 @@ func InitDB (conf *config.Config) error {
         name VARCHAR,
         email VARCHAR,
         password VARCHAR,
-        create_at TIMESTAMP)`,tableNameUser)
+        createdat TIMESTAMP)`,tableNameUser)
     
     _ , err = DB.Exec(cmdU)
     if err != nil{
@@ -49,8 +49,8 @@ func InitDB (conf *config.Config) error {
         content VARCHAR,
         state   VARCHAR,
         userid  INTEGER,
-        create_at   TIMESTAMP,
-        update_at   TIMESTAMP)`,tableNameTodo)
+        createdat   TIMESTAMP,
+        updatedat   TIMESTAMP)`,tableNameTodo)
         
     _, err = DB.Exec(cmdT)
     if err != nil {
