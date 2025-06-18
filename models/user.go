@@ -2,7 +2,7 @@ package models
 
 import(
     "time"
-    "log"
+    "fmt"
     "errors"
     )
     
@@ -42,9 +42,9 @@ func (u *User) CreateUser()(err error){
         time.Now())
     
     if err != nil {
-        log.Fatalln(err)
+        return fmt.Errorf("Error from CreateUser %w", err)
     }
-    return err
+    return nil
 }
 
 func GetUser (userID int)(user *User, err error){
@@ -56,8 +56,11 @@ func GetUser (userID int)(user *User, err error){
         &user.Name,
         &user.Email,
         &user.CreatedAt)
+    if err != nil {
+        return nil, fmt.Errorf("Error from GetUser: %w", err)
+    }
 
-    return user, err
+    return user, nil
 }
 
 func (u *User) UpdateUser()(err error){
@@ -65,16 +68,16 @@ func (u *User) UpdateUser()(err error){
     
     _, err = DB.Exec(cmd, u.ID, u.Name, u.Email)
     if err != nil {
-        log.Fatalln(err)
+        return fmt.Errorf("Error from UpdateUser %w", err)
     }
-    return err
+    return nil
 }
 
 func DeleteUser(id int)(err error){
     cmd := "DELETE FROM users WHERE id = $1"
     _, err = DB.Exec(cmd,id)
     if err != nil{
-        log.Fatalln(err)
+        return fmt.Errorf("Error from DeleteUser %w", err)
     }
-    return err
+    return nil
 }
