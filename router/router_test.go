@@ -6,11 +6,19 @@ import(
     "io/ioutil"
     "testing"
     "main/models"
+    "main/config"
+    "fmt"
     )
 
 func TestGetTodosHandlar(t *testing.T){
     
-    err := models.InitTestDB()
+    //test毎に初期化が必要なセット
+    cfg, err := config.LoadConfig("test")
+    if err != nil{
+        fmt.Println(err)
+        return
+    }
+    err = models.InitDB(cfg)
     if err != nil{
         fmt.Println(err)
         return
