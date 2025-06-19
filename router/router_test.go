@@ -3,10 +3,30 @@ package router
 import(
     "net/http"
     "net/http/httptest"
+    "io/ioutil"
     "testing"
+    "main/models"
+    "main/config"
+    "fmt"
     )
 
 func TestGetTodosHandlar(t *testing.T){
+    
+    //test毎に初期化が必要なセット
+    cfg, err := config.LoadConfig("test")
+    if err != nil{
+        fmt.Println(err)
+        return
+    }
+    err = models.InitDB(cfg)
+    if err != nil{
+        fmt.Println(err)
+        return
+    }
+    
+    // ここでハンドラ登録
+    InitRouters()
+    
     tests := []struct {
         name        string
         url         string
@@ -36,8 +56,16 @@ func TestGetTodosHandlar(t *testing.T){
             rec:= httptest.NewRecorder()
             http.DefaultServeMux.ServeHTTP(rec, req)
             res:=rec.Result()
+            defer res.Body.Close()
+            
             if res.StatusCode != tt.wantStatus{
-                t.Errorf("got %d, want %d", res.StatusCode, tt.wantStatus)
+                bodyBytes, err := ioutil.ReadAll(res.Body)
+                if err != nil{
+                    t.Errorf("got %d, want %d, errmsg: %v", res.StatusCode, tt.wantStatus, string(bodyBytes))
+                }else{
+                    t.Errorf("got %d, want %d, errmsg: %v", res.StatusCode, tt.wantStatus, string(bodyBytes))
+                }
+                
             }
         })
     }

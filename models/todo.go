@@ -84,7 +84,7 @@ func (t *Todo)UpdateTodo(todoState string)(err error){
 
 func DeleteTodo(todoid int)error{
     cmd:=`delete from todos where id=$1`
-    if _, err = DB.Exec(cmd, todoid); err != nil{
+    if _, err := DB.Exec(cmd, todoid); err != nil{
         return fmt.Errorf("DeleteTodosError %w", err)
     }
     return nil
