@@ -3,10 +3,22 @@ package router
 import(
     "net/http"
     "net/http/httptest"
+    "io/ioutil"
     "testing"
+    "main/models"
     )
 
 func TestGetTodosHandlar(t *testing.T){
+    
+    err := models.InitTestDB()
+    if err != nil{
+        fmt.Println(err)
+        return
+    }
+    
+    // ここでハンドラ登録
+    InitRouters()
+    
     tests := []struct {
         name        string
         url         string
@@ -36,8 +48,16 @@ func TestGetTodosHandlar(t *testing.T){
             rec:= httptest.NewRecorder()
             http.DefaultServeMux.ServeHTTP(rec, req)
             res:=rec.Result()
+            defer res.Body.Close()
+            
             if res.StatusCode != tt.wantStatus{
-                t.Errorf("got %d, want %d", res.StatusCode, tt.wantStatus)
+                bodyBytes, err := ioutil.ReadAll(res.Body)
+                if err != nil{
+                    t.Errorf("got %d, want %d, errmsg: %v", res.StatusCode, tt.wantStatus, string(bodyBytes))
+                }else{
+                    t.Errorf("got %d, want %d, errmsg: %v", res.StatusCode, tt.wantStatus, string(bodyBytes))
+                }
+                
             }
         })
     }
