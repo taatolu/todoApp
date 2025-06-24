@@ -6,6 +6,7 @@ import (
     )
 
 func InitRouters(){
-    http.HandleFunc("/api/v1/resource",handlers.GetTodos)
-    http.HandleFunc("/api/v2/resource",handlers.GetTodo)
+    http.HandleFunc("/api/v1/todos", handlers.TodosHandler) //GET,POSTメソッド
+    http.HandleFunc("/api/v1/todos/", handlers.TodoHandler) //GET,PUSH,DELETEメソッド
+    http.HandleFunc("/api/v1/users", handlers.UsersHandler) //GET,POSTメソッド
 }

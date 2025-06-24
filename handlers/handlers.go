@@ -8,6 +8,15 @@ import(
     "main/utils"
     )
     
+//メソッドお対応をr.Methodで判定
+func TodosHandler(w http.ResponseWriter, r *http.Request){
+    switch r.Method{
+        case http.MethodGet: GetTodos(w, r)
+        case http.MethodPost: CreateTodo(w, r)
+        default: utils.JsonError(w, StatusMethodNotAllowed, "リクエストメソッドが不正です")
+    }
+}
+    
 func GetTodos( w http.ResponseWriter, r *http.Request){
     w.Header().Set("Content-Type", "application/json")
     
