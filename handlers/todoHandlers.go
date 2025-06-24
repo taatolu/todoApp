@@ -8,26 +8,15 @@ import(
     "main/utils"
     )
     
-//メソッドの対応をr.Methodで判定
-///TodosHandler
+//メソッドお対応をr.Methodで判定
 func TodosHandler(w http.ResponseWriter, r *http.Request){
     switch r.Method{
         case http.MethodGet: GetTodos(w, r)
         case http.MethodPost: CreateTodo(w, r)
-        default: utils.JsonError(w, http.StatusMethodNotAllowed, "リクエストメソッドが不正です")
+        default: utils.JsonError(w, StatusMethodNotAllowed, "リクエストメソッドが不正です")
     }
 }
-
-///TodoHandler
-func TodoHandler(w http.ResponseWriter, r *http.Request){
-    switch r.Method{
-        case http.MethodGet: GetTodo(w, r)
-        case http.MethodPut: UpdateTodo(w, r)
-        default: utils.JsonError(w, http.StatusMethodNotAllowed, "リクエストメソッドが不正です")
-    }
-}
-
-//v1/todos_GetTodos
+    
 func GetTodos( w http.ResponseWriter, r *http.Request){
     w.Header().Set("Content-Type", "application/json")
     
@@ -65,51 +54,6 @@ func GetTodos( w http.ResponseWriter, r *http.Request){
         return
     }
     
-}
-
-///v1/todo_CreateTodo
-func CreateTodo(w http.ResponseWriter, r *http.Request){
-    w.Header().Set("Content-Type", "application/json")
-    useridStr := r.URL.Query().Get("user_id")
-    if useridStr == ""{
-        utils.JsonError(w, http.StatusBadRequest, "user_idが入力されていません")
-        return
-    }
-    userid, err := strconv.Atoi(useridStr)
-    if err != nil{
-        utils.JsonError(w, http.StatusBadRequest, "user_idが数値ではありません")
-        return
-    }
-    user, err := models.GetUser(userid)
-    if err != nil{
-        utils.JsonError(w, http.StatusNotFound, "userが存在しません")
-        return
-    }
-    
-    //リクエストボディからcontentを取得
-    var req struct{
-        Content string  `json:"content"`
-    }
-    
-    err = json.NewDecoder(r.Body).Decode(&req)
-    if err != nil{
-        utils.JsonError(w, http.StatusBadRequest, "リクエストボディのパースに失敗しました")
-        return
-    }
-    if req.Content ==""{
-        utils.JsonError(w, http.StatusBadRequest, "contentが入力されていません")
-        return
-    }
-    
-    //todoの作成
-    err = user.CreateTodo(req.Content)
-    if err != nil{
-        utils.JsonError(w, http.StatusInternalServerError, "todoの作成に失敗")
-        return
-    }
-    //todoの作成成功レスポンス
-    w.WriteHeader(http.StatusCreated)
-    w.Write([]byte(`{"message": "todoの作成に成功しました"}`))
 }
 
 func GetTodo(w http.ResponseWriter, r *http.Request){
