@@ -143,3 +143,46 @@ func GetTodo(w http.ResponseWriter, r *http.Request){
     }
 }
 
+//UpdateTodo
+func UpdateTodo(w http.ResponseWriter, r *http.Request){
+    w.Header().Set("Content-Type", "application/json")
+    //クエリパラメータからtodo_id取得
+    todoidStr := r.URL.Query().Get("todo_id")
+    if todoidStr == ""{
+        utils.JsonError(w, http.StatusBadRequest, "todo_idが入力されていません")
+        return
+    }
+    
+    todoid, err := strconv.Atoi(todoidStr)
+    if err != nil{
+        utils.JsonError(w, http.StatusBadRequest, "todo_idが数値ではありません")
+        return
+    }
+    
+    todo, err := models.GetTodo(todoid)
+    if err != nil{
+        utils.JsonError(w, http.StatusNotFound, "todo_idに一致するtodoが存在しません")
+        return
+    }
+    
+    //todoのupdate作業
+    ///request.Bodyから変更したいcontentを取得
+    var req struct{
+        Contents    string  `"json":"contents"`
+    }
+    if err = json.NewDecoder(r.Body).Decode(&req); err!=nil{
+        utils.JsonError(w, http.StatusInternalServerError, "変更したい内容のパースに失敗")
+        return
+    }
+    
+    if err = todo.UpdateTodo(req.Contents); err!=nil{
+        utils.JsonError(w, http.StatusInternalServerError, "todoのUpdateに失敗")
+        return
+    }
+    
+    w.WriteHeader(http.StatusOK)
+    w.Write([]byte(`{"massage":"todoのUpdateに成功しました"}`))
+}
+
+
+
