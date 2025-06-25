@@ -27,7 +27,7 @@ Go言語製のシンプルなToDo管理アプリケーションです。
 - Go標準
 - [github.com/lib/pq](https://pkg.go.dev/github.com/lib/pq) (PostgreSQLドライバ)
 - [github.com/go-ini/ini](https://pkg.go.dev/github.com/go-ini/ini) (設定ファイル)
-- [github.com/google/uuid](https://pkg.go.dev/github.com/google/uuid)
+- [github.com/google/uuid](https://pkg.go.dev/github.com/google/uuid) (ハッシュ化)
 - [github.com/stretchr/testify](https://pkg.go.dev/github.com/stretchr/testify) (テスト補助)
 
 ## 簡単な使い方（例）
