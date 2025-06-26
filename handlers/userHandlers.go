@@ -62,5 +62,22 @@ func CreateUser(w http.ResponseWriter, r *http.Request){
         }
         return
     }
+    
+    //取得したBodyの情報を構造体にマッピング
+    newuser := &User{
+        Name:   req.Usernaem,
+        Email:  rreq.Email,
+        Password:   req.Pass
+    }
+    //User作成
+    if err = newuser.CreateUser(); err!= nil{
+        utils.JsonError(w, http.StatusInternalServerError, "Userの作成に失敗しました")
+    }
+    
+    //作成成功
+    w.Header().Set("Content-Type","application/json")
+    w.WriteHeader("http.StatusOK")
+    w.Write([]byte(`{"message": "userの作成に成功しました"}`))
+    
 }
 
