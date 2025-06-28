@@ -2,9 +2,9 @@ package handlers
 
 import(
     "net/http"
-    "strconv"
     "encoding/json"
     "main/utils"
+    "main/models"
     )
 
 func UsersHandler(w http.ResponseWriter, r *http.Request){
@@ -16,9 +16,9 @@ func UsersHandler(w http.ResponseWriter, r *http.Request){
 
 func UserHandler(w http.ResponseWriter, r *http.Request){
     switch r.Method{
-        case    http.MethodGet: GetUser(w, r)
-        case    http.MethodPut: UpdateUser(w, r)
-        case    http.MethodDelete: DeleteUser(w, r)
+        //case    http.MethodGet: GetUser(w, r)
+        //case    http.MethodPut: UpdateUser(w, r)
+        //case    http.MethodDelete: DeleteUser(w, r)
         default: utils.JsonError(w, http.StatusMethodNotAllowed, "リクエストメソッドが不正です")
     }
 }
@@ -64,10 +64,10 @@ func CreateUser(w http.ResponseWriter, r *http.Request){
     }
     
     //取得したBodyの情報を構造体にマッピング
-    newuser := &User{
-        Name:   req.Usernaem,
-        Email:  rreq.Email,
-        Password:   req.Pass
+    newuser := &models.User{
+        Name:   req.Username,
+        Email:  req.Email,
+        Password:   req.Pass,
     }
     //User作成
     if err = newuser.CreateUser(); err!= nil{
@@ -76,7 +76,7 @@ func CreateUser(w http.ResponseWriter, r *http.Request){
     
     //作成成功
     w.Header().Set("Content-Type","application/json")
-    w.WriteHeader("http.StatusOK")
+    w.WriteHeader(http.StatusOK)
     w.Write([]byte(`{"message": "userの作成に成功しました"}`))
     
 }
