@@ -4,6 +4,8 @@ import (
     "main/models"
     "main/utils"
     "main/config"
+    "main/router"
+    "net/http"
     "fmt"
     "log"
     )
@@ -17,14 +19,18 @@ func main(){
         log.Fatalln(err)
     }
     
-    //LOｇの設定
+    //Loｇの設定
     utils.LoggingSettings(conf.Logfile)
     
-    //ＤＢイニシャライズ
+    //DBイニシャライズ
     models.InitDB(conf)
     fmt.Println(models.DB)
     
+    handler := router.CORSMiddleware(router.InitRouters())
+    http.ListenAndServe(":8080", handler)
     
+    
+     /*     
     user1, err := models.GetUser(1)
     if err != nil{
         log.Fatalln(err)
@@ -34,7 +40,7 @@ func main(){
         log.Fatalln(err)
     }
     
-    /*
+
     todos, err := user1.GetTodos()
     if err != nil{
         log.Fatalln(err)
@@ -43,7 +49,6 @@ func main(){
     for _, v :=range todos{
         fmt.Println(v)
     }
-    */
     
     todo1, err := models.GetTodo(1)
     if err != nil{
@@ -55,7 +60,7 @@ func main(){
     if err != nil{
         log.Fatalln(err)
     }
-    /*   
+ 
     u := &models.User{}
     u.Name = "testman"
     u.Email = "testman@exsample.com"
