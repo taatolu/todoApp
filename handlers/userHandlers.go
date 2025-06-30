@@ -18,8 +18,8 @@ func UsersHandler(w http.ResponseWriter, r *http.Request){
 func UserHandler(w http.ResponseWriter, r *http.Request){
     switch r.Method{
         case    http.MethodGet: GetUser(w, r)
-        //case    http.MethodPut: UpdateUser(w, r)
-        //case    http.MethodDelete: DeleteUser(w, r)
+        case    http.MethodPut: UpdateUser(w, r)
+        case    http.MethodDelete: DeleteUser(w, r)
         default: utils.JsonError(w, http.StatusMethodNotAllowed, "リクエストメソッドが不正です")
     }
 }
@@ -159,5 +159,30 @@ func UpdateUser(w http.ResponseWriter, r *http.Request){
     w.Header().Set("Content-Type","application/json")
     w.WriteHeader(http.StatusOK)
     w.Write([]byte(`{"message":"UserのUpdate成功"}`))
+}
+
+func DeleteUser(w http.ResponseWriter, r *http.Request){
+    //クエリパラメータからuser_idを取得
+    userIDStr := r.URL.Query().Get("user_id")
+    if userIDStr == ""{
+        utils.JsonError(w, http.StatusBadRequest, "user_idに値が登録されていません")
+        return
+    }
+    //userIDStrを数値に変換
+    userid, err := strconv.Atoi(userIDStr)
+    if err != nil{
+        utils.JsonError(w, http.StatusBadRequest, "user_idが数値ではありません")
+        return
+    }
+    //DeleteUserで削除
+    if err = models.DeleteUser(userid); err!= nil{
+        utils.JsonError(w, http.StatusInternalServerError, "Userを削除できませんでした")
+        return
+    }
+    //削除成功コメント
+    w.Header().Set("Content-Type", "application/json")
+    w.WriteHeader(http.StatusOK)
+    w.Write([]byte(`{"message": "userの削除成功"}`))
+    return
 }
 
