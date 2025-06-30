@@ -49,7 +49,6 @@ func TestCreateUser(t *testing.T){
         },
         
     }
-    
     //テストケースをループで回す
     for _, tt := range tests {
         t.Run(tt.testname, func(t *testing.T){
@@ -59,5 +58,23 @@ func TestCreateUser(t *testing.T){
             }
         })
     }
-    
+}
+
+func TestGetUser(t *testing.T){
+    tests := []struct{
+        testname    string
+        userid      int
+        wantuser    *User
+    }{
+        //testケースの作成
+        {
+            testname:   "正常系",
+            userid:     1,
+            wantuser:   &User{
+                Name:   "yusaku",
+                Email:  "test@example.com",
+            },
+        }
+        
+    }
 }
