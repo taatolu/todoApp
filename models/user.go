@@ -65,6 +65,23 @@ func GetUser (userID int)(user *User, err error){
 
 func (u *User) UpdateUser()(err error){
     cmd := "UPDATE users SET name=$2,email=$3 WHERE id=$1"
+    //入力項目の不足確認
+    ///不足項目のリストアップ
+    var missing []string
+    if u.ID ==0{
+        missing = append(missing, "user.ID")
+    }
+    if u.Name ==""{
+        missing = append(missing, "user.Name")
+    }
+    if u.Email ==""{
+        missing = append(missing, "user.Email")
+    }
+    //不足項目があった場合は何が不足しているか返す
+    if len(missing)>0{
+        return fmt.Errorf("入力項目不足 :%v", missing)
+
+    }
     
     _, err = DB.Exec(cmd, u.ID, u.Name, u.Email)
     if err != nil {
