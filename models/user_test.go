@@ -166,3 +166,33 @@ func TestUpdateUser(t *testing.T){
         })
     }
 }
+
+func TestDeleteUser(t *testing.T){
+    tests := []struct{
+        testname    string
+        userid      int
+    }{
+        //testケースの作成
+        {
+            //正常系
+            testname:   "正常系",
+            userid:     1,
+        },
+        {
+            //異常系
+            testname:   "存在しないIDの削除",
+            userid:     1000,
+        },
+    }
+    //テストケースをループで回す
+    for _, tt := range tests{
+        tt := tt // クロージャ対策
+        t.Run(tt.testname, func(t *testing.T){
+            err := DeleteUser(tt.userid)
+            assert.NoError(t, err, "期待していなエラーが発生 %v", err)
+            user, err := GetUser(tt.userid)
+            assert.Error(t, err, "Userの削除に成功したのでGetすると本来エラーになるはず")
+            assert.Nil(t, user, "Userの削除に成功したのでGetすると本来nilになるはず")
+        })
+    }
+}
