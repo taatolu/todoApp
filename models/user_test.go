@@ -62,6 +62,11 @@ func TestCreateUser(t *testing.T){
 }
 
 func TestGetUser(t *testing.T){
+    //Test用のUserを作成しておく（毎回このUesrをGetする）
+    userSample := User{Name:"Get用User", Email:"Get@exam.com", Password:"getexam"}
+    err := userSample.CreateUser()
+    if err != nil{  t.Errorf("TestGetUser用にUserを作成するところでエラー %w", err)    }
+
     tests := []struct{
         testname    string
         userid      int
@@ -72,21 +77,22 @@ func TestGetUser(t *testing.T){
         {
             //正常系
             testname:   "正常系",
-            userid:     1,
+            userid:     userSample.ID,
             wantuser:   &User{
-                Name:   "yusaku",
-                Email:  "test@example.com",
+                Name:   userSample.Name,
+                Email:  userSample.Email,
             },
             wantErr:    false,
         },
         {
             //異常系
             testname:   "異常系(作成されていないuserid)",
-            userid:     100,
+            userid:     userSample.ID +1,
             wantuser:   nil,
             wantErr:    true,
         },
     }
+    
     //テストケースをループで回す
     for _, tt := range tests{
         t.Run(tt.testname, func(t *testing.T){

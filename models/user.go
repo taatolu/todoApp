@@ -32,14 +32,14 @@ func (u *User) CreateUser()(err error){
     name,
     email,
     password,
-    createdat) values ($1,$2,$3,$4,$5)`
+    createdat) values ($1,$2,$3,$4,$5) returning id`
     
-    _, err = DB.Exec(cmd,
+    err = DB.QueryRow(cmd,
         createUUID(),
         u.Name,
         u.Email,
         Encrypt(u.Password),
-        time.Now())
+        time.Now()).Scan(&u.ID)
     
     if err != nil {
         return fmt.Errorf("error from CreateUser %w", err)
