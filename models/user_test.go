@@ -65,7 +65,7 @@ func TestGetUser(t *testing.T){
     //Test用のUserを作成しておく（毎回このUesrをGetする）
     userSample := User{Name:"Get用User", Email:"Get@exam.com", Password:"getexam"}
     err := userSample.CreateUser()
-    if err != nil{  t.Errorf("TestGetUser用にUserを作成するところでエラー %w", err)    }
+    if err != nil{t.Errorf("TestGetUser用にUserを作成するところでエラー %w", err)}
 
     tests := []struct{
         testname    string
@@ -114,6 +114,11 @@ func TestGetUser(t *testing.T){
 }
 
 func TestUpdateUser(t *testing.T){
+    //Update対象のUserを作成
+    userSample := User{Name:"Update用User", Email:"Update@exam.com", Password:"updateexam"}
+    err := userSample.CreateUser()
+    if err != nil{t.Errorf("TestUpdateUser用にUserを作成するところでエラー %w", err)}
+    
     //テーブル駆動テスト用に構造体を作成
     tests := []struct{
         testname    string
@@ -124,9 +129,9 @@ func TestUpdateUser(t *testing.T){
         {
             testname:   "正常系",
             user:       &User{
-                ID:     1,
-                Name:   "変更後",
-                Email:  "changed@example.com",
+                ID:     userSample.ID,
+                Name:   "変更1",
+                Email:  "changed1@example.com",
             },
             wantErr:    false,
         },
@@ -134,17 +139,17 @@ func TestUpdateUser(t *testing.T){
             testname:   "異常系(user.IDなし)",
             user:       &User{
                 ID:     0,  // int型のデフォルト値
-                Name:   "変更後",
-                Email:  "changed@example.com",
+                Name:   "変更2",
+                Email:  "changed2@example.com",
             },
             wantErr:    true,
         },
         {
             testname:   "異常系(user.Nameなし)",
             user:       &User{
-                ID:     1,
+                ID:     userSample.ID,
                 Name:   "",
-                Email:  "changed@example.com",
+                Email:  "changed3@example.com",
             },
             wantErr:    true,
         },
@@ -174,6 +179,12 @@ func TestUpdateUser(t *testing.T){
 }
 
 func TestDeleteUser(t *testing.T){
+    //Delete対象のUserを作成
+    userSample := User{Name:"Delete用User", Email:"Delete@exam.com", Password:"Deleteexam"}
+    err := userSample.CreateUser()
+    if err != nil{t.Errorf("TestDeleteUser用にUserを作成するところでエラー %w", err)}
+    
+    //テーブルテスト用にテストケースのテーブルを用意
     tests := []struct{
         testname    string
         userid      int
@@ -182,12 +193,12 @@ func TestDeleteUser(t *testing.T){
         {
             //正常系
             testname:   "正常系",
-            userid:     1,
+            userid:     userSample.ID,
         },
         {
             //異常系
             testname:   "存在しないIDの削除",
-            userid:     1000,
+            userid:     userSample.ID + 10,
         },
     }
     //テストケースをループで回す
