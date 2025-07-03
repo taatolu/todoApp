@@ -1,0 +1,54 @@
+version: '3'
+services:
+    db:
+        image: postgres:10
+        environment:
+            #環境変数の設定
+            #直書きすると、リモートリポジトリにpushできないので、${DB_PASSWORD}のように.envファイルから取得
+            #もちろん.envは.gitignoreする
+            - POSTGRES_PASSWORD=${DB_PASSWORD}
+            - POSTGRES_USER=${DB_USER}
+            - POSTGRES_DB=${DB_DBNAME}
+        ports:
+            - "5432:5432"
+        volumes:
+            #「db_data という名前付きボリュームを、コンテナ内の /var/lib/postgresql/data にマウントする」という意味
+            - db_data:/var/lib/postgresql/data
+    
+    web:
+        build:
+            context: ./web  #そのサービスのDockerイメージをビルドする際に「どのディレクトリをビルドコンテキストとして使うか」を指定する設定
+            dockerfile: Dockerfile  #上記context内のDockerfileを使用してイメージをビルドしてね
+        volumes:
+            #ホスト（あなたのPCやサーバー）側のルートディレクトリ直下にある「web」フォルダ（./web）
+            #とコンテナ内のルート直下にある「/app」ディレクトリを同期（バインドマウント）するという意味
+            - ./web:/app
+        ports:
+            #ホスト（あなたのPCやサーバ）の3000番ポートを、コンテナ内の3000番ポートにマッピングします。
+            #localhost:3000（ホスト側）にアクセスすると、コンテナ内の3000番ポートで待ち受けているWebサーバーにリクエストが転送されます。
+            - "3000:3000"
+        depends_on:
+            - api
+    
+    api:
+        image: golang:1.13
+        working_dir: /go/src/app
+        volumes:
+            - ./api:/go/src/app
+        command:
+            go run main.go
+        environment:
+          - DB_HOST=db
+          - DB_USER=${DB_USER}
+          - DB_PASSWORD=${DB_PASSWORD}
+          - DB_NAME=${DB_DBNAME}
+        deponds_on:
+            - db
+        ports:
+            - "8080:8080"
+    
+volumes:
+    #「このComposeプロジェクトで db_data という名前のボリュームを使いますよ」と宣言
+    #「services>dbvolumesで宣言した"- db_data"という名前のボリュームをこのComposeで使用します」と宣言
+    db_data:
+
