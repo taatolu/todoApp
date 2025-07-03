@@ -56,6 +56,54 @@ Goは並行処理やAPI開発に強みがあり、PostgreSQLはトランザク�
 
 ---
 
+## 🐳 Docker Composeによる開発環境構築 
+本アプリは、Docker Composeを利用してGo APIサーバー・PostgreSQL・フロントエンドを一括で立ち上げることができます。
+
+### 1. .envファイルの作成
+プロジェクトルートに.envファイルを作成し、以下の内容を記載してください（値は任意で変更してください）。
+```:env
+DB_PASSWORD=your_db_password
+DB_USER=your_db_user
+DB_DBNAME=your_db_name
+```
+※.envファイルは機密情報を含むため、必ず.gitignoreに追加してください。
+
+### 2. サービスの起動
+以下のコマンドで、全サービス（API, DB, Web）が一括で起動します。
+```
+//sh
+docker compose up --build
+```
+初回はイメージのビルドやDBセットアップのため、数分かかる場合があります。
+
+### 3. サービスへのアクセス
+
+| サービス | アクセスURL | 備考 |
+|:---|:---|:---|
+| フロントエンド | http://localhost:3000 | React等の場合 |
+| APIサーバー | http://localhost:8080 | Go製APIエンドポイント |
+| データベース | localhost:5432 | PostgreSQL（外部接続用） |
+
+### 4. サービスの停止
+```
+//sh
+docker compose down
+```
+
+### 5. ディレクトリ構成例
+```Code
+todoApp/
+├── api/         # Go APIアプリ
+├── web/         # フロントエンド
+├── docker-compose.yml
+├── .env
+└── ...
+```
+### 6. 注意事項
+DB_HOSTはdbで固定されています（Docker Compose内のサービス名で自動的に名前解決されます）。
+DBデータはdb_dataボリュームに永続化されます。
+.envファイルが無い場合、DB接続に失敗します。
+
 ## 使い方
 
 ### API エンドポイント例
