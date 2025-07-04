@@ -71,3 +71,12 @@ func TestCreateTodo(t *testing.T){
     }
 }
 
+func TestGetTodo(t *testing.T){
+    //helperFunctionを使用して初期設定
+    testTodo := createTestTodo(t)
+    
+    todo, err := GetTodo(testTodo.ID)
+    assert.NoError(t, err, "GetTodoでエラー %v", err)
+    assert.Equal(t, testTodo, todo)
+}
+
