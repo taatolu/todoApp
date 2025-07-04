@@ -48,7 +48,7 @@ func TestCreateTodo(t *testing.T){
             _, err := user.CreateTodo(tt.content)
             if tt.wantError{
                 //tt.wantError=trueの場合
-                assert.Error(t, err, "エラーを期待していたが、エラーが帰らない %v")
+                assert.Error(t, err, "エラーを期待していたが、エラーが帰らない")
             }else{
                 //tt.wantError=falseの場合
                 assert.NoError(t, err, "エラーが発生してしまった %v", err)
