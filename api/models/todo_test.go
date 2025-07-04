@@ -6,6 +6,20 @@ import(
     "fmt"
     )
 
+//CreateTodoのヘルパー関数作成
+func createTestTodo(t *testing.T)*Todo{
+    t.Helper()
+    user, err := createTestUser(t, "sampleUser", "sample@exam.com", "samplesample")
+    if err != nil{
+        t.Fatalf("Test用のUser作成でエラー %v", err)
+    }
+    todo, err := user.CreateTodo("sampleTodo")
+    if err != nil{
+        t.Fatalf("Test用のTodo作成でエラー %v", err)
+    }
+    return todo
+}
+
 
 func TestCreateTodo(t *testing.T){
     //Todo作成のためのUser作成

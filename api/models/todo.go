@@ -14,19 +14,25 @@ type Todo struct{
     UpdatedAt   time.Time
 }
 
-func (u *User)CreateTodo(content string)(int, error){
-    var todoID int
+func (u *User)CreateTodo(content string)(*Todo, error){
+    todo := &Todo{}
     cmd:= `insert into todos (
         content,
         state,
         userid,
         createdat,
-        updatedat) values ($1,$2,$3,$4,$5) returning id`
-    if err := DB.QueryRow(cmd, content, "未着手", u.ID, time.Now(), time.Now()).Scan(&todoID); err!= nil{
-        return 0, fmt.Errorf("CreteTodoError %w", err)
+        updatedat) values ($1,$2,$3,$4,$5) returning id, content, state, userid, createdat, updatedat`
+    if err := DB.QueryRow(cmd, content, "未着手", u.ID, time.Now(), time.Now()).Scan(
+        &todo.ID,
+        &todo.Content,
+        &todo.State,
+        &todo.UserID,
+        &todo.CreatedAt,
+        &todo.UpdatedAt); err!= nil{
+        return nil, fmt.Errorf("CreateTodoError %w", err)
     }
     
-    return todoID, nil
+    return todo, nil
 }
 
 func GetTodo(todoNum int)(todo *Todo, err error){
