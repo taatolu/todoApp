@@ -4,6 +4,21 @@ import(
     "testing"
     "github.com/stretchr/testify/assert"
     )
+    
+//ヘルパー関数の作成
+func createTestUser(t *testing.T, username, email, password string)(*User, error){
+    t.Helper()
+    user := &User{
+        Name:   username,
+        Email:  email,
+        Password:   password,
+    }
+    if err := user.CreateUser(); err != nil{
+        return nil, err
+    }
+    return user, nil
+}
+
 
 func TestCreateUser(t *testing.T){
     tests := []struct {
@@ -61,11 +76,13 @@ func TestCreateUser(t *testing.T){
     }
 }
 
+
 func TestGetUser(t *testing.T){
-    //Test用のUserを作成しておく（毎回このUesrをGetする）
-    userSample := User{Name:"Get用User", Email:"Get@exam.com", Password:"getexam"}
-    err := userSample.CreateUser()
-    if err != nil{t.Errorf("TestGetUser用にUserを作成するところでエラー %w", err)}
+    //Test用のUserを作成しておく
+    userSample, err := createTestUser(t, "sampleUser", "sample@exam.com", "testtest")
+    if err != nil{
+        t.Fatalf("Test用のUser作成でエラー %v", err)
+    }
 
     tests := []struct{
         testname    string
@@ -114,10 +131,11 @@ func TestGetUser(t *testing.T){
 }
 
 func TestUpdateUser(t *testing.T){
-    //Update対象のUserを作成
-    userSample := User{Name:"Update用User", Email:"Update@exam.com", Password:"updateexam"}
-    err := userSample.CreateUser()
-    if err != nil{t.Errorf("TestUpdateUser用にUserを作成するところでエラー %w", err)}
+    //Test用のUserを作成しておく
+    userSample, err := createTestUser(t, "sampleUser", "sample@exam.com", "testtest")
+    if err != nil{
+        t.Fatalf("Test用のUser作成でエラー %v", err)
+    }
     
     //テーブル駆動テスト用に構造体を作成
     tests := []struct{
@@ -179,10 +197,11 @@ func TestUpdateUser(t *testing.T){
 }
 
 func TestDeleteUser(t *testing.T){
-    //Delete対象のUserを作成
-    userSample := User{Name:"Delete用User", Email:"Delete@exam.com", Password:"Deleteexam"}
-    err := userSample.CreateUser()
-    if err != nil{t.Errorf("TestDeleteUser用にUserを作成するところでエラー %w", err)}
+    ////Test用のUserを作成しておく
+    userSample, err := createTestUser(t, "sampleUser", "sample@exam.com", "testtest")
+    if err != nil{
+        t.Fatalf("Test用のUser作成でエラー %v", err)
+    }
     
     //テーブルテスト用にテストケースのテーブルを用意
     tests := []struct{
