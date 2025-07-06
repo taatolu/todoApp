@@ -20,12 +20,13 @@ const(
 func InitDB (conf *config.Config) error {
     var err error
     user := conf.User
-    password :=conf.Password
+    password := conf.Password
     dbname := conf.DBname
-    connStr :=fmt.Sprintf("user=%s password=%s dbname=%s sslmode=disable", user, password, dbname)
-    DB , err = sql.Open("postgres", connStr)
-    
-    if err != nil{
+    host := conf.Host
+    connStr := fmt.Sprintf("host=%s user=%s password=%s dbname=%s sslmode=disable", host, user, password, dbname)
+    DB, err = sql.Open("postgres", connStr)
+
+    if err != nil {
         return fmt.Errorf("DB接続エラー %w", err)
     }
     

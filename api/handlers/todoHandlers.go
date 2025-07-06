@@ -102,7 +102,7 @@ func CreateTodo(w http.ResponseWriter, r *http.Request){
     }
     
     //todoの作成
-    err = user.CreateTodo(req.Content)
+    _, err = user.CreateTodo(req.Content)
     if err != nil{
         utils.JsonError(w, http.StatusInternalServerError, "todoの作成に失敗")
         return

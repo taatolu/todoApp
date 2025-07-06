@@ -13,10 +13,9 @@ import(
 func TestGetTodosHandlar(t *testing.T){
     
     //test毎に初期化が必要なセット
-    cfg, err := config.LoadConfig("test")
-    if err != nil{
-        fmt.Println(err)
-        return
+    cfg := config.LoadConfig()
+    if cfg == nil {
+        t.Fatal("failed to load config: cfg is nil")
     }
     err = models.InitDB(cfg)
     if err != nil{
