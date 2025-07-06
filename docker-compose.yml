@@ -15,21 +15,7 @@ services:
             #「db_data という名前付きボリュームを、コンテナ内の /var/lib/postgresql/data にマウントする」という意味
             - db_data:/var/lib/postgresql/data
     
-    web:
-        build:
-            context: ./web  #そのサービスのDockerイメージをビルドする際に「どのディレクトリをビルドコンテキストとして使うか」を指定する設定
-            dockerfile: Dockerfile  #上記context内のDockerfileを使用してイメージをビルドしてね
-        volumes:
-            #ホスト（あなたのPCやサーバー）側のルートディレクトリ直下にある「web」フォルダ（./web）
-            #とコンテナ内のルート直下にある「/app」ディレクトリを同期（バインドマウント）するという意味
-            - ./web:/app
-        ports:
-            #ホスト（あなたのPCやサーバ）の3000番ポートを、コンテナ内の3000番ポートにマッピングします。
-            #localhost:3000（ホスト側）にアクセスすると、コンテナ内の3000番ポートで待ち受けているWebサーバーにリクエストが転送されます。
-            - "3000:3000"
-        depends_on:
-            - api
-    
+
     api:
         image: golang:1.13
         working_dir: /go/src/app

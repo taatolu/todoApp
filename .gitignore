@@ -1,2 +1,4 @@
 log.text
 config.ini
+.env
+docker-compose.yml

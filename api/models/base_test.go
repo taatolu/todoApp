@@ -9,8 +9,8 @@ import(
 
 func TestInitDB(t *testing.T){
     //configのテスト
-    cfg, err := config.LoadConfig("test")
-    assert.NoError(t, err, "LoadConfigでエラー発生")
+    cfg := config.LoadConfig()
+    assert.NotEmpty(t, cfg, "LoadConfigでデータが取得できない")
     //DBのイニシャライズ
     err = InitDB(cfg)
     assert.NoError(t, err, "InitDBでエラー発生")

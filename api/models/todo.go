@@ -21,8 +21,11 @@ func (u *User)CreateTodo(content string)(*Todo, error){
         state,
         userid,
         createdat,
-        updatedat) values ($1,$2,$3,$4,$5) returning id, content, state, userid, createdat, updatedat`
-    if err := DB.QueryRow(cmd, content, "未着手", u.ID, time.Now(), time.Now()).Scan(
+        updatedat) values ($1,$2,$3,$4,$5) returning 
+        id, content, state, userid, createdat, updatedat`
+    // CreatedAtと UpdatedAtは同じ値を使う
+    saveTime := time.Now()
+    if err := DB.QueryRow(cmd, content, "未着手", u.ID, saveTime, saveTime).Scan(
         &todo.ID,
         &todo.Content,
         &todo.State,
