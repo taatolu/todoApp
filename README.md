@@ -1,4 +1,8 @@
 # todoApp
+[![CI](https://github.com/taatolu/todoApp/actions/workflows/ci.yml/badge.svg)](https://github.com/taatolu/todoApp/actions/workflows/ci.yml)
+
+このリポジトリはGitHub Actionsを利用してCI（継続的インテグレーション）を実行しています。  
+プッシュやプルリクエスト時に自動でテストやビルドが実施されます。
 
 Go言語製のシンプルなToDo管理アプリケーションです。  
 本アプリは、APIサーバーとして高パフォーマンスかつ保守性の高いGo言語を採用し、信頼性・拡張性に優れたPostgreSQLをデータストアとして利用しています。
