@@ -12,7 +12,7 @@ func TestInitDB(t *testing.T){
     cfg := config.LoadConfig()
     assert.NotEmpty(t, cfg, "LoadConfigでデータが取得できない")
     //DBのイニシャライズ
-    err = InitDB(cfg)
+    err := InitDB(cfg)
     assert.NoError(t, err, "InitDBでエラー発生")
     
     //DTが適切に作成できているか確認

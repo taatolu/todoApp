@@ -14,9 +14,9 @@ import (
 
 func main(){
     //設定ファイルの読み込み
-    conf, err := config.LoadConfig("product")
-    if err != nil{
-        log.Fatalln(err)
+    conf := config.LoadConfig()
+    if conf == nil {
+        log.Fatalln("failed to load config")
     }
     
     //Loｇの設定
