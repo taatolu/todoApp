@@ -88,7 +88,7 @@ func (u *User)GetTodos()(todos []*Todo, err error){
 
 func (t *Todo)UpdateTodo(todoState string)(err error){
     if todoState ==""{
-        return nil, fmt.Errorf("todoStateに値が入力されていない")
+        return fmt.Errorf("todoStateに値が入力されていない")
     }
     cmd := `update todos set state = $2, updatedat=$3 where id = $1`
     _, err = DB.Exec(cmd, t.ID, todoState, time.Now())
