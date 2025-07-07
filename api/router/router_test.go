@@ -17,7 +17,7 @@ func TestGetTodosHandlar(t *testing.T){
     if cfg == nil {
         t.Fatal("failed to load config: cfg is nil")
     }
-    err = models.InitDB(cfg)
+    err := models.InitDB(cfg)
     if err != nil{
         fmt.Println(err)
         return
