@@ -15,6 +15,9 @@ type Todo struct{
 }
 
 func (u *User)CreateTodo(content string)(*Todo, error){
+    if content ==""{
+        return nil, fmt.Errorf("contentに値が入力されていない")
+    }
     todo := &Todo{}
     cmd:= `insert into todos (
         content,
@@ -84,6 +87,9 @@ func (u *User)GetTodos()(todos []*Todo, err error){
 }
 
 func (t *Todo)UpdateTodo(todoState string)(err error){
+    if content ==""{
+        return nil, fmt.Errorf("contentに値が入力されていない")
+    }
     cmd := `update todos set state = $2, updatedat=$3 where id = $1`
     _, err = DB.Exec(cmd, t.ID, todoState, time.Now())
     if err != nil{
