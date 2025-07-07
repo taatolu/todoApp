@@ -80,3 +80,41 @@ func TestGetTodo(t *testing.T){
     assert.Equal(t, testTodo, todo)
 }
 
+func TestUpdateTodo(t *testing.T){
+    //helperfunctionを使用してTodoの初期設定
+    testTodo := createTestTodo(t)
+
+    //テーブルテストように構造体を作成
+    tests := []struct{
+        testname    string
+        content     string
+        wantError   bool
+    }{
+        //テストケースの作成
+        {
+            testname:   "正常系",
+            content:    "変更１回目",
+            wantError:  false,
+        },
+        {
+            testname:   "異常系(content無し)",
+            content:    "",
+            wantError:  true,
+        },
+    }
+    //テストケースをループで回す
+    for _, tt := range tests{
+        t.Run(tt.testname, func(t *testing.T){
+            err := testTodo.UpdateTodo(tt.content)
+            if tt.wantError {
+                //wanterrorがtrue（異常系）の場合
+                assert.Error(t, err, "エラーを期待していたのにエラーが帰らない")
+            } else {
+                //wanterrorがfalse（正常系）の場合
+                assert.NoError(t, err, "エラー発生 %v", err)
+            }
+        })
+    }
+}
+
+
