@@ -44,7 +44,7 @@ func TestGetTodosHandlar(t *testing.T){
         },
         {
             name:       "存在しないパス",
-            url:        "/api/v1/todos?unknown",
+            url:        "/api/v1/todoszzz",
             wantStatus: http.StatusNotFound,
         },
     }
