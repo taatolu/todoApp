@@ -1,7 +1,6 @@
 package models
 
 import(
-    "crypto/sha1"
     "database/sql"
     _ "github.com/lib/pq"
     "github.com/google/uuid"

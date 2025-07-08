@@ -6,7 +6,7 @@ import(
     )
 
 //ハッシュ化のテスト
-func TestHash(t *teesting.T){
+func TestHash(t *testing.T){
     password := "samplePassword"
     hashedPass, err := Hash(password)
     assert.NoError(t, err, "ハッシュ化失敗 %v", err)
