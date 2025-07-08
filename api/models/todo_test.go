@@ -117,4 +117,11 @@ func TestUpdateTodo(t *testing.T){
     }
 }
 
-
+func TestDeleteTodo(t *testing.T){
+    newTodo := createTestTodo(t)
+    err := DeleteTodo(newTodo.ID)
+    assert.NoError(t, err, "削除失敗 %v", err)
+    
+    deletedTodo, err := GetTodo(newTodo.ID)
+    assert.Error(t, err, "期待していたエラーが帰らない")
+}
