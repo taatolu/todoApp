@@ -24,7 +24,7 @@ func TestGetTodosHandlar(t *testing.T){
     }
     
     // ここでハンドラ登録
-    InitRouters()
+    handler := InitRouters()
     
     tests := []struct {
         name        string
@@ -53,7 +53,7 @@ func TestGetTodosHandlar(t *testing.T){
         t.Run(tt.name, func(t *testing.T){
             req:= httptest.NewRequest("GET", tt.url, nil)
             rec:= httptest.NewRecorder()
-            http.DefaultServeMux.ServeHTTP(rec, req)
+            handler.DefaultServeMux.ServeHTTP(rec, req) // handler（InitRoutersで生成したmux）でテストする
             res:=rec.Result()
             defer res.Body.Close()
             
