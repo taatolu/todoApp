@@ -16,7 +16,7 @@ func TestHash(t *testing.T){
 //ハッシュチェックのテスト
 func TestHashCheck(t *testing.T){
     password := "samplePassword"
-    hashedPass, err := Hash(password)
+    hashedPass, _ := Hash(password)
     //正しいパスワードの場合
     if !HashCheck(password, hashedPass){
         t.Errorf("正しいパスワードを渡したのに、認証失敗")

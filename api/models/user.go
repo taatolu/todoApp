@@ -37,7 +37,7 @@ func (u *User) CreateUser()(err error){
     
     hashedPass, err := utils.Hash(u.Password)
     if err != nil{
-        return fmt.Efforf("ハッシュ化失敗")
+        return fmt.Errorf("ハッシュ化失敗")
     }
     
     err = DB.QueryRow(cmd,
