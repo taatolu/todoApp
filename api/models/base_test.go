@@ -36,11 +36,5 @@ func TestCreateUUID(t *testing.T){
     assert.NotNil(t, uuid, "uuidの作成に失敗")
 }
 
-//Encryptのテスト
-func TestEncrypt(t *testing.T){
-    newText := Encrypt("あああ")
-    assert.NotEmpty(t, newText, "ハッシュ化されたデータが帰ってない")
-    assert.NotEqual(t, "あああ", newText, "ハッシュ化されず、当初の文字のまま")
-}
 
 

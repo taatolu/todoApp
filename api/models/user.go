@@ -4,6 +4,7 @@ import(
     "time"
     "fmt"
     "errors"
+    "main/utils"
     )
     
 
@@ -34,11 +35,16 @@ func (u *User) CreateUser()(err error){
     password,
     createdat) values ($1,$2,$3,$4,$5) returning id`
     
+    hashedPass, err := utils.Hash(u.Password)
+    if err != nil{
+        return fmt.Errorf("ハッシュ化失敗")
+    }
+    
     err = DB.QueryRow(cmd,
         createUUID(),
         u.Name,
         u.Email,
-        Encrypt(u.Password),
+        hashedPass,
         time.Now()).Scan(&u.ID)
     
     if err != nil {
