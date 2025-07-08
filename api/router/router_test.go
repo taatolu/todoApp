@@ -53,7 +53,7 @@ func TestGetTodosHandlar(t *testing.T){
         t.Run(tt.name, func(t *testing.T){
             req:= httptest.NewRequest("GET", tt.url, nil)
             rec:= httptest.NewRecorder()
-            handler.DefaultServeMux.ServeHTTP(rec, req) // handler（InitRoutersで生成したmux）でテストする
+            handler.ServeHTTP(rec, req) // handler（InitRoutersで生成したmux）でテストする
             res:=rec.Result()
             defer res.Body.Close()
             
