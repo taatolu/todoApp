@@ -122,6 +122,6 @@ func TestDeleteTodo(t *testing.T){
     err := DeleteTodo(newTodo.ID)
     assert.NoError(t, err, "削除失敗 %v", err)
     
-    deletedTodo, err := GetTodo(newTodo.ID)
+    _, err := GetTodo(newTodo.ID)
     assert.Error(t, err, "期待していたエラーが帰らない")
 }
