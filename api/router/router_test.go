@@ -17,14 +17,14 @@ func TestGetTodosHandlar(t *testing.T){
     if cfg == nil {
         t.Fatal("failed to load config: cfg is nil")
     }
-    err = models.InitDB(cfg)
+    err := models.InitDB(cfg)
     if err != nil{
         fmt.Println(err)
         return
     }
     
     // ここでハンドラ登録
-    InitRouters()
+    handler := InitRouters()
     
     tests := []struct {
         name        string
@@ -34,17 +34,17 @@ func TestGetTodosHandlar(t *testing.T){
         //テストケース作成
         {
             name:       "正常系",
-            url:        "/api/v1/todos/resource?user_id=1",
+            url:        "/api/v1/todos?user_id=1",
             wantStatus: http.StatusOK,
         },
         {
             name:       "user_idなし",
-            url:        "/api/v1/todos/resource",
+            url:        "/api/v1/todos",
             wantStatus: http.StatusBadRequest,
         },
         {
             name:       "存在しないパス",
-            url:        "/api/v1/todos/unknown",
+            url:        "/api/v1/todoszzz",
             wantStatus: http.StatusNotFound,
         },
     }
@@ -53,7 +53,7 @@ func TestGetTodosHandlar(t *testing.T){
         t.Run(tt.name, func(t *testing.T){
             req:= httptest.NewRequest("GET", tt.url, nil)
             rec:= httptest.NewRecorder()
-            http.DefaultServeMux.ServeHTTP(rec, req)
+            handler.ServeHTTP(rec, req) // handler（InitRoutersで生成したmux）でテストする
             res:=rec.Result()
             defer res.Body.Close()
             
