@@ -38,7 +38,7 @@ func (u *User) CreateUser()(err error){
         createUUID(),
         u.Name,
         u.Email,
-        Encrypt(u.Password),
+        utils.Hash(u.Password),
         time.Now()).Scan(&u.ID)
     
     if err != nil {
