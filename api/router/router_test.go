@@ -34,17 +34,17 @@ func TestGetTodosHandlar(t *testing.T){
         //テストケース作成
         {
             name:       "正常系",
-            url:        "/api/v1/todos/?user_id=1",
+            url:        "/api/v1/todos?user_id=1",
             wantStatus: http.StatusOK,
         },
         {
             name:       "user_idなし",
-            url:        "/api/v1/todos/",
+            url:        "/api/v1/todos",
             wantStatus: http.StatusBadRequest,
         },
         {
             name:       "存在しないパス",
-            url:        "/api/v1/todos/unknown",
+            url:        "/api/v1/todos?unknown",
             wantStatus: http.StatusNotFound,
         },
     }
